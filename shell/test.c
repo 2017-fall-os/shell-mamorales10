@@ -15,6 +15,7 @@ void printTokens(char **vect){
   
 }
 
+/* Returns the length of the string */
 int strLength(char *str){
 
   char *temp = str;
@@ -26,19 +27,23 @@ int strLength(char *str){
   return len;
 }
 
+/* Concatenates the given strings with a '/' inbetween */
 char *strConcat(char *src, char *dst){
 
   char srcLen = strLength(src);
   char dstLen = strLength(dst);
-  char *finalStr = (char *)malloc(sizeof(char)*(srcLen + dstLen + 1));
+  char *finalStr = (char *)malloc(sizeof(char)*(srcLen + dstLen + 2));
 
   char i;
-  for(i = 0; i < (srcLen+dstLen); i++){
+  for(i = 0; i < (srcLen+dstLen+1); i++){
     if(i < srcLen){
       finalStr[i] = src[i];
     }
+    else if(i == srcLen){
+      finalStr[i] = '/';
+    }
     else{
-      finalStr[i] = dst[i-srcLen];
+      finalStr[i] = dst[i-(srcLen+1)];
     }
   }
   finalStr[i] = 0;
@@ -103,6 +108,7 @@ int main(int argc, char** argv, char** envp){
   free(testVect);
   printTokens(pathVect);        /*DELETE THIS*/
   
+  
   if(write(1, "$ ", 2) != 2){
     write(2, "There was an error.\n", 20);
     return -1;
@@ -113,7 +119,7 @@ int main(int argc, char** argv, char** envp){
   
     vect = mytoc((char *)buff, ' ');
     printTokens(vect);        /*DELETE THIS*/
-    /*
+    
     int pid = fork();
     if(pid < 0){
       printf("Failed to create new process\n");
@@ -121,17 +127,18 @@ int main(int argc, char** argv, char** envp){
     else if(pid == 0){
       int execVal = execve(vect[0], vect, envp);
 
-      for(i=0; execVal != 0; i++){
-	
-	
+      for(i=0; execVal != 0 && pathVect[i]; i++){
+	execVal = execve(strConcat(pathVect[i], vect[0]), vect, envp);
       }
-
+      if(!execVal && pathVect[i])
+	printf("Command Not Found.\n");
+      return 0;
     }
     else{
       int retPID = wait(NULL);
-      printf("Child Process returned");
+      printf("Child Process Returned.\n");
     }
-    */
+    
     free(vect); //Frees token vector
     if(write(1, "$ ", 2) != 2){
       write(2, "There was an error.\n", 20);
