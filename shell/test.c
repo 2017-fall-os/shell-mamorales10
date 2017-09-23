@@ -50,9 +50,7 @@ int main(int argc, char** argv, char** envp){
       }
       else{
 	wait(&signal);
-	if(WIFEXITED(signal))    /* Checking for exit signal of child */
-	  printf("Child Process Returned.\n");
-	else if(WIFSIGNALED(signal))
+        if(WIFSIGNALED(signal))
 	  printf("Program terminated with exit code %d\n", WTERMSIG(signal));
       }
     }
