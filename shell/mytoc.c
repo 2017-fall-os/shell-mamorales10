@@ -2,6 +2,17 @@
 #include <stdio.h>
 #include "mytoc.h"
 
+/* Prints the tokens in the vector */
+void printTokens(char **vect){
+
+  char **tempTok = vect;
+  while(*tempTok != 0){
+    printf("%s\n", *tempTok);
+    tempTok++;
+  }
+  
+}
+
 /* Counts the number of tokens. */
 char getTokNum(char *str, char delim){
 

@@ -3,92 +3,8 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "mytoc.h"
+#include "helpFuncts.h"
 
-/* Prints the tokens in the vector */
-void printTokens(char **vect){
-
-  char **tempTok = vect;
-  while(*tempTok != 0){
-    printf("%s\n", *tempTok);
-    tempTok++;
-  }
-  
-}
-
-/* Returns the length of the string */
-int strLength(char *str){
-
-  char *temp = str;
-  char i;
-  int len = 0;
-  for(i = 0; temp[i] || temp[i] != '\0'; i++){
-    len++;
-  }
-  return len;
-}
-
-/* Concatenates the given strings with a '/' inbetween */
-char *strConcat(char *src, char *dst){
-
-  char srcLen = strLength(src);
-  char dstLen = strLength(dst);
-  char *finalStr = (char *)malloc(sizeof(char)*(srcLen + dstLen + 2));
-
-  char i;
-  for(i = 0; i < (srcLen+dstLen+1); i++){
-    if(i < srcLen){
-      finalStr[i] = src[i];
-    }
-    else if(i == srcLen){
-      finalStr[i] = '/';
-    }
-    else{
-      finalStr[i] = dst[i-(srcLen+1)];
-    }
-  }
-  finalStr[i] = 0;
-  return finalStr;
-}
-
-/* Checks if input equals PATH*/
-char isPath(char *str){
-
-  char path[] = "PATH";
-  int i;
-  for(i = 0; str[i] == path[i]; i++){
-    if(str[i] == '\0')
-      return 1;
-  }
-  return 0;
-}
-
-/* Checks if input equals exit */
-char isExit(char *str){
-
-  char exit[] = "exit";
-  int i;
-
-  for(i = 0; str[i] == exit[i]; i++){
-    if(str[i] == '\0')
-      return 1;
-  }
-  
-  return 0;
-  
-}
-
-/* Receives string and replaces '\n' with 0 */
-void getString(char* s, int limit){
-
-  char *p = s;
-  char c;
-  fgets(s, limit, stdin);
-  while((c = *p) && (c != '\n'))
-    p++;
-  if(c == '\n')
-    *p = 0;
-  
-}
 
 int main(int argc, char** argv, char** envp){
 
@@ -96,18 +12,15 @@ int main(int argc, char** argv, char** envp){
   char **vect;
 
   /* Searches envp for PATH variable */
-  char **testVect;
+  char **envpVect;
   char i;
-  for(i=0; !isPath(*(testVect = mytoc((char *)envp[i], '='))); i++){
-    free(testVect);
+  for(i=0; !isPath(*(envpVect = mytoc((char *)envp[i], '='))); i++){
+    free(envpVect);
   }
-  printTokens(testVect);         /*DELETE THIS*/
 
-  /* Tokenizes each path */
-  char **pathVect = mytoc((char *)testVect[1], ':');
-  free(testVect);
-  printTokens(pathVect);        /*DELETE THIS*/
-  
+  /* Tokenizes each path in the PATH variable */
+  char **pathVect = mytoc((char *)envpVect[1], ':');
+  free(envpVect);
   
   if(write(1, "$ ", 2) != 2){
     write(2, "There was an error.\n", 20);
@@ -116,29 +29,33 @@ int main(int argc, char** argv, char** envp){
   getString(buff, 200);
 
   while(!isExit(buff)){
-  
+    /* Tokenezes command and arguments */
     vect = mytoc((char *)buff, ' ');
-    printTokens(vect);        /*DELETE THIS*/
-    
-    int pid = fork();
-    if(pid < 0){
-      printf("Failed to create new process\n");
-    }
-    else if(pid == 0){
-      int execVal = execve(vect[0], vect, envp);
+    int signal;   /* Signal to check if child process exited normally */
 
-      for(i=0; execVal != 0 && pathVect[i]; i++){
-	execVal = execve(strConcat(pathVect[i], vect[0]), vect, envp);
+    /* Start Process if command not empty */
+    if(vect[0]){
+      int pid = fork();
+      if(pid < 0){
+	printf("Failed to create new process\n");
       }
-      if(!execVal && pathVect[i])
+      else if(pid == 0){
+	int execVal = execve(vect[0], vect, envp);
+
+	for(i=0; execVal != 0 && pathVect[i]; i++){
+	  execVal = execve(strConcat(pathVect[i], vect[0]), vect, envp);
+	}
 	printf("Command Not Found.\n");
-      return 0;
+	return 0;
+      }
+      else{
+	wait(&signal);
+	if(WIFEXITED(signal))    /* Checking for exit signal of child */
+	  printf("Child Process Returned.\n");
+	else if(WIFSIGNALED(signal))
+	  printf("Program terminated with exit code %d\n", WTERMSIG(signal));
+      }
     }
-    else{
-      int retPID = wait(NULL);
-      printf("Child Process Returned.\n");
-    }
-    
     free(vect); //Frees token vector
     if(write(1, "$ ", 2) != 2){
       write(2, "There was an error.\n", 20);
