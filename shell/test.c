@@ -29,7 +29,7 @@ int main(int argc, char** argv, char** envp){
   getString(buff, 200);
 
   while(!isExit(buff)){
-    /* Tokenezes command and arguments */
+    /* Tokenizes command and arguments */
     vect = mytoc((char *)buff, ' ');
     int signal;   /* Signal to check if child process exited normally */
 
@@ -41,7 +41,8 @@ int main(int argc, char** argv, char** envp){
       }
       else if(pid == 0){
 	int execVal = execve(vect[0], vect, envp);
-
+	
+	/* Searching for an executable path */
 	for(i=0; execVal != 0 && pathVect[i]; i++){
 	  execVal = execve(strConcat(pathVect[i], vect[0]), vect, envp);
 	}
@@ -62,7 +63,7 @@ int main(int argc, char** argv, char** envp){
     getString(buff, 200);
   
   }
-  
+  free(pathVect); /* Free tokenized paths */
   printf("Program Ended\n");    
 
 }
