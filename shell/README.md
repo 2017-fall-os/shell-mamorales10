@@ -7,11 +7,11 @@ PATH environment to find it. If the command is not found, the shell will
 print "Command not found.", or the exit code if the command fails.
 
 This directory contains the following files:
-*test.c - This file contains main() and uses fork(), execve(), and wait().
-*mytoc.c- This file contains my tokenizer.
-*mytoc.h - This is the header file for mytoc.c.
-*helpFuncts.c - This file contains helper functions for test.c and a few string functions.
-*helpFuncts.h - This is the header file for helpFuncts.h.
+* test.c - This file contains main() and uses fork(), execve(), and wait().
+* mytoc.c- This file contains my tokenizer.
+* mytoc.h - This is the header file for mytoc.c.
+* helpFuncts.c - This file contains helper functions for test.c and a few string functions.
+* helpFuncts.h - This is the header file for helpFuncts.h.
 
 To compile:
 ~~~
@@ -31,11 +31,11 @@ $ make clean
 ~~~
 
 ## Help I Recieved:
-*For my isExit() function, I received help from the strcmp() function example in
+* For my isExit() function, I received help from the strcmp() function example in
 page 106 of the K&R textbook, but I modified it so that it only compares to check
 if "exit" is the input.
-*For my getString() function, I used most of the code from the gets_n() function
+* For my getString() function, I used most of the code from the gets_n() function
 that I put in my Arch1 binary search tree lab from Fall 2016.
-*For the write() system call, I received help and I used the same if-statement
+* For the write() system call, I received help and I used the same if-statement
 format from the following URL: codewiki.wikidot.com/c:system-calls:write.
-*For the wait() system call, I received some help on how to get the exit code using wait() from the following URL: www.geeksforgeeks.org/wait-system-call-c/
+* For the wait() system call, I received some help on how to get the exit code using wait() from the following URL: www.geeksforgeeks.org/wait-system-call-c/
