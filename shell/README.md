@@ -2,9 +2,8 @@
 
 The purpose of this lab is to create a shell that uses my tokenizer and the
 system calls fork(), execve(), and wait() to create child processes and run
-commands. If the absolute path is not specified, the shell will look use the
-PATH environment to find it. If the command is not found, the shell will
-print "Command not found.", or the exit code if the command fails.
+commands. If the absolute path is not specified, the shell will use the
+PATH environment to find it. If the path of the command is not found, the shell will print "Command not found.", or it will print the exit code number if the command fails.
 
 This directory contains the following files:
 * test.c - This file contains main() and uses fork(), execve(), and wait().
@@ -37,5 +36,5 @@ if "exit" is the input.
 * For my getString() function, I used most of the code from the gets_n() function
 that I put in my Arch1 binary search tree lab from Fall 2016.
 * For the write() system call, I received help and I used the same if-statement
-format from the following URL: codewiki.wikidot.com/c:system-calls:write.
+format from the following URL: www.codewiki.wikidot.com/c:system-calls:write
 * For the wait() system call, I received some help on how to get the exit code using wait() from the following URL: www.geeksforgeeks.org/wait-system-call-c/
