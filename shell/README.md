@@ -35,6 +35,8 @@ page 106 of the K&R textbook, but I modified it so that it only compares to chec
 if "exit" is the input.
 * For my getString() function, I used most of the code from the gets_n() function
 that I put in my Arch1 binary search tree lab from Fall 2016.
+* I used the same format of if-statements that is shown in Figure 5.3 in Chapter 5 of Three Easy
+Pieces to create processes and differentiate between the child and parent process.
 * For the write() system call, I received help and I used the same if-statement
 format from the following URL: www.codewiki.wikidot.com/c:system-calls:write
 * For the wait() system call, I received some help on how to get the exit code using wait() from the following URL: www.geeksforgeeks.org/wait-system-call-c/
