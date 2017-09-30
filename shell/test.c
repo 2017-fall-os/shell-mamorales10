@@ -86,7 +86,7 @@ int main(int argc, char** argv, char** envp){
 	  vect = mytoc((char *)commandVect[i], ' ');
 	  numCommands--;
 	}
-	free(vect);
+	free(commandVect);
 	wait(&signal);
 	if(WIFSIGNALED(signal))
 	  printf("Program terminated with exit code %d\n", WTERMSIG(signal));
