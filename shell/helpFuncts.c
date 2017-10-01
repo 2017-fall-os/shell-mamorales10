@@ -37,29 +37,13 @@ char *strConcat(char *src, char *dst){
   return finalStr;
 }
 
-/* Checks if input equals PATH*/
-char isPath(char *str){
+char cmpString(char *str1, char *str2){
 
-  char path[] = "PATH";
-  int i;
-  for(i = 0; str[i] == path[i]; i++){
-    if(str[i] == '\0')
+  int i = 0;
+  for(i = 0; str1[i] == str2[i]; i++){
+    if(str1[i] == '\0' && str2[i] == '\0')
       return 1;
   }
-  return 0;
-}
-
-/* Checks if input equals exit */
-char isExit(char *str){
-
-  char exit[] = "exit";
-  int i;
-  
-  for(i = 0; str[i] == exit[i]; i++){
-    if(str[i] == '\0')
-      return 1;
-  }
-  
   return 0;
 }
 
