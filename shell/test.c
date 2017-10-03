@@ -57,11 +57,13 @@ int main(int argc, char** argv, char** envp){
     int signal;   /* Signal to check if child process exited normally */
 
     /* Start Process if command not empty */
-    if(numCommands){
+    if(commandVect[0]){
       int pid;  // process id
       if(numCommands > 1){
 
-	for(i = 0; i < numCommands-1; i++){
+	int inCopy = dup(0);
+	int outCopy = dup(1);
+	for(i = 0; commandVect[i+1]; i++){
 	  vect = mytoc((char *)commandVect[i], ' ');
 	  pipe(pipeFDs);
 	  pid = fork();
@@ -104,19 +106,24 @@ int main(int argc, char** argv, char** envp){
 	 
 	  /* Searching for an executable path */
 	  for(i=0; execVal != 0 && pathVect[i]; i++){
-	    printf("pid = %d\n", pid);
+	    //printf("pid = %d\n", pid);
 	    execVal = execve(strConcat(pathVect[i], vect[0]), vect, envp);
-	  }
+	    }
+	  //getString(buff, 200);
+	  //printf("Parent read <%s> from child.\n", buff);
 	  printf("Command not found.\n");
-	  exit(0);
+	  return 0;
 	}
 	else{
+	  //printf("PID: %d\n", pid);
 	  free(commandVect);
 	  wait(&signal);
 	  if(WIFSIGNALED(signal))
 	    printf("Program terminated with exit code %d\n", WTERMSIG(signal));
 	}
 	//free(commandVect);
+	dup2(inCopy, 0);
+	dup2(outCopy, 1);
        
       }
       else{
