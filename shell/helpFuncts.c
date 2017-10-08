@@ -59,3 +59,14 @@ void getString(char* s, int limit){
     *p = 0;
   
 }
+
+/* Checks if string has '&'*/
+int isBackground(char *s){
+
+  int i;
+  for(i = 0; s[i]; i++){
+    if(s[i] == '&')
+      return 1;
+  }
+  return 0;
+}
