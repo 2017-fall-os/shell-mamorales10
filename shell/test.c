@@ -35,7 +35,7 @@ int main(int argc, char** argv, char** envp){
     return -1;
   }
   getString(buff, 200);
-  int bg = isBackground((char *)buff);/* Checking for background tasks */
+  //int bg = isBackground((char *)buff);/* Checking for background tasks */
   
   char **commandVect;
   char numCommands;
@@ -45,7 +45,7 @@ int main(int argc, char** argv, char** envp){
     
     
     /* Tokenizes '&' */
-    //nextBuffer = mytoc((char *)buff, '&');
+    //nextBuffer = mytoc((char *)buff, '&'); 
 
     /* Checking for pipes */
     numCommands = getTokNum(buff, '|');
@@ -160,14 +160,13 @@ int main(int argc, char** argv, char** envp){
 	}
       }
     }
-    
     free(vect); //Frees token vector
     if(write(1, "$ ", 2) != 2){
       write(2, "There was an error.\n", 20);
       return -1;
     }
     getString(buff, 200);
-    bg = isBackground((char *)buff);
+    //bg = isBackground((char *)buff);
   }
   free(pathVect); /* Free tokenized paths */
   printf("Program Ended\n");    
