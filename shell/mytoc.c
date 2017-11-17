@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "mytoc.h"
+#include "helpFuncts.h"
 
 /* Prints the tokens in the vector */
 void printTokens(char **vect){
@@ -44,7 +45,7 @@ char **mytoc(char *str, char delim){
   char numToks = getTokNum(str, delim);
   char **vect = (char **)malloc(sizeof(char *) * (numToks+1));
   
-  char len = 0;   /*length of the token*/
+  int len = 0;   /*length of the token*/
   char state = 0;
   char toksLeft = numToks;
   char i;  /*index for str*/
@@ -62,11 +63,7 @@ char **mytoc(char *str, char delim){
     }
     else{
       if(i == delim || i == '\0'){
-	tok = (char *)malloc(sizeof(char)*(len+1));
-	for(j=0; j<len; j++){
-	  tok[j] = temp[j-len];  /*Copying token into an array*/
-	}
-	tok[len] = 0;
+	tok = copyString(temp-len,len); /*Copying token into tok array*/
 	vect[numToks-toksLeft] = tok; /*Assigning pointer of array to vector*/
 	toksLeft--;
 	len = 0;

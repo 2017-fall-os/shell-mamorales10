@@ -1,4 +1,6 @@
 
+char *copyString(char *start, int len);
+
 int strLength(char *str);
 
 char *strConcat(char *src, char *dst);

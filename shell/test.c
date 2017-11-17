@@ -9,25 +9,24 @@
 int main(int argc, char** argv, char** envp){
   char buff[200];
   char **vect;
-
+  
   /* Searches envp for PATH variable */
   char **envpVect;
   char i;
   for(i=0; !cmpString(*(envpVect = mytoc((char *)envp[i], '=')), "PATH"); i++){
-    free(envpVect);
-  }
-
+      free(envpVect);}
+  
   /* Tokenizes each path in the PATH variable */
   char **pathVect = mytoc((char *)envpVect[1], ':');
   free(envpVect);
-
+  
   /* Searches envp for home directory for cd command */
-  for(i=0; !cmpString(*(envpVect = mytoc((char *)envp[i], '=')), "HOME"); i++){
+  for(i=0; !cmpString(*(envpVect = mytoc((char *)envp[i], '=')), "HOME"); i++)
     free(envpVect);
-  }
+  
   char *homePath = (char *)envpVect[1];
   free(envpVect);
-
+  
   /* Prompt */
   if(write(1, "$ ", 2) != 2){
     write(2, "There was an error.\n", 20);

@@ -14,6 +14,18 @@ int strLength(char *str){
   return len;
 }
 
+char *copyString(char *start, int len){
+
+  char *newString = (char *)malloc(sizeof(char)*(len+1));
+  int i;
+  for(i = 0; i < len; i++)
+    newString[i] = start[i];
+  newString[len] = 0;
+
+  return newString;
+
+}
+
 /* Concatenates the given strings with a '/' inbetween */
 char *strConcat(char *src, char *dst){
 
