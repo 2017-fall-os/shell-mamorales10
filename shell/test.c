@@ -7,9 +7,10 @@
 
 
 int main(int argc, char** argv, char** envp){
+
   char buff[200];
   char **vect;
-  
+
   /* Searches envp for PATH variable */
   char **envpVect;
   char i;
@@ -19,6 +20,13 @@ int main(int argc, char** argv, char** envp){
   /* Tokenizes each path in the PATH variable */
   char **pathVect = mytoc((char *)envpVect[1], ':');
   free(envpVect);
+
+  /* Searches envp for PS1 variable */
+  for(i=0; !cmpString(*(envpVect = mytoc((char *)envp[i], '=')), "PS1"); i++)
+    free(envpVect);
+
+  char *ps1 = envpVect[1];
+  free(envpVect);
   
   /* Searches envp for home directory for cd command */
   for(i=0; !cmpString(*(envpVect = mytoc((char *)envp[i], '=')), "HOME"); i++)
@@ -26,12 +34,15 @@ int main(int argc, char** argv, char** envp){
   
   char *homePath = (char *)envpVect[1];
   free(envpVect);
-  
-  /* Prompt */
-  if(write(1, "$ ", 2) != 2){
-    write(2, "There was an error.\n", 20);
-    return -1;
+
+  if(ps1){/* Checking if shell if being tested */
+    /* Prompt */
+    if(write(1, "$ ", 2) != 2){
+      write(2, "There was an error.\n", 20);
+      return -1;
+    }
   }
+  
   getString(buff, 200);
   //int bg = isBackground((char *)buff);/* Checking for background tasks */
   
@@ -159,10 +170,14 @@ int main(int argc, char** argv, char** envp){
       }
     }
     free(vect); //Frees token vector
-    if(write(1, "$ ", 2) != 2){
-      write(2, "There was an error.\n", 20);
-      return -1;
+
+    if(ps1){  /* Checking if shell is being tested */
+      if(write(1, "$ ", 2) != 2){
+        write(2, "There was an error.\n", 20);
+        return -1;
+      }
     }
+    
     getString(buff, 200);
     //bg = isBackground((char *)buff);
   }
